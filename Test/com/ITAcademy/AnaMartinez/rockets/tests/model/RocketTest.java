@@ -38,4 +38,39 @@ public class RocketTest {
         Rocket rocket = new Rocket("12345678",3);
         rocket.setId("123456789");
     }
+
+    @Test
+    public void ThePropellersHaveAMaxPowerValueEach(){
+        Rocket rocket = new Rocket("12345678",3);
+        assertNotNull(rocket.getPropellersMaxPower());
+    }
+
+    @Test
+    public void EachPropellerMustHaveAnAssignedMaxPower(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20, 30);
+        int[] propellersMaxPower = rocket.getPropellersMaxPower();
+        assertEquals(10, propellersMaxPower[0]);
+        assertEquals(20, propellersMaxPower[1]);
+        assertEquals(30, propellersMaxPower[2]);
+    }
+
+    @Test (expected = InvalidParameterException.class)
+    public  void PassingNotEnoughNumbersToAssignTheMaxPowerToThePropellersThrowsAnException(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20);
+    }
+
+    @Test (expected = InvalidParameterException.class)
+    public  void PassingTooManyNumbersToAssignTheMaxPowerToThePropellersThrowsAnException(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20,30,40);
+    }
+
+    @Test (expected = InvalidParameterException.class)
+    public void ARocketMustHaveAtLeastOnePropellerOrExceptionIsThrown(){
+        Rocket rocket = new Rocket("12345678",0);
+    }
+
+    @Test (expected = InvalidParameterException.class)
+    public void ANegativeValueAsMaximumPropellerValueThrowsAnException(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20, -1);
+    }
 }
