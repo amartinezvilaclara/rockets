@@ -6,25 +6,30 @@ public class Rocket {
 
     private String id;
     private int propellersNumber;
-    private int[] propellersMaxPower;
+    private Propeller[] propellers;
 
     public Rocket(String id, int propellersNumber) {
         checkValidId(id);
         checkValidPropellerNumber(propellersNumber);
         this.id = id;
         this.propellersNumber = propellersNumber;
-        this.propellersMaxPower = new int[propellersNumber];
+        this.propellers = new Propeller[propellersNumber];
+        for(int i = 0; i< propellersNumber; i++){
+            propellers[i]= new Propeller(0);
+        }
     }
 
 
-    public Rocket(String id, int propellersNumber, int... propellersMaxPower) {
+    public Rocket(String id, int propellersNumber, int... propellersMaxPower) throws InvalidParameterException {
         checkValidId(id);
         checkValidPropellerNumber(propellersNumber);
-        checkValidPropellersMaxValues(propellersNumber, propellersMaxPower);
+        checkEnoughPropellersMaxValues(propellersNumber, propellersMaxPower);
         this.id = id;
         this.propellersNumber = propellersNumber;
-        this.propellersMaxPower = new int[propellersNumber];
-        System.arraycopy(propellersMaxPower, 0, this.propellersMaxPower, 0, propellersMaxPower.length);
+        this.propellers = new Propeller[propellersNumber];
+        for(int i = 0; i< propellersMaxPower.length; i++){
+            propellers[i]= new Propeller(propellersMaxPower[i]);
+        }
     }
 
     public String getId() {
@@ -41,7 +46,15 @@ public class Rocket {
     }
 
     public int[] getPropellersMaxPower() {
+        int[] propellersMaxPower = new int[propellersNumber];
+        for(int i = 0; i< propellersNumber; i ++){
+            propellersMaxPower[i]= propellers[i].getMaxPower();
+        }
         return propellersMaxPower;
+    }
+
+    public Propeller[] getPropellers(){
+        return  propellers;
     }
 
     private void checkValidId(String id) throws InvalidParameterException {
@@ -50,14 +63,9 @@ public class Rocket {
         }
     }
 
-    private void checkValidPropellersMaxValues(int propellersNumber, int[] propellersMaxPower) {
+    private void checkEnoughPropellersMaxValues(int propellersNumber, int[] propellersMaxPower) {
         if (propellersMaxPower.length != propellersNumber) {
             throw new InvalidParameterException("Not all propellers have a maximum power assigned");
-        }
-        for (int i = 0; i < propellersNumber; i++) {
-            if (propellersMaxPower[i] < 0) {
-                throw new InvalidParameterException("The propellers max value cannot be a negative number");
-            }
         }
     }
 
