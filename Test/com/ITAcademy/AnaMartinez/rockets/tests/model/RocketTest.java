@@ -40,6 +40,13 @@ public class RocketTest {
     }
 
     @Test
+    public void ICanSetAValidId(){
+        Rocket rocket = new Rocket("12345678",3);
+        rocket.setId("abcdefgh");
+        assertEquals("abcdefgh",rocket.getId());
+    }
+
+    @Test
     public void ThePropellersHaveAMaxPowerValueEach(){
         Rocket rocket = new Rocket("12345678",3);
         assertNotNull(rocket.getPropellersMaxPower());
