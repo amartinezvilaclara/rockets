@@ -1,5 +1,6 @@
 package com.ITAcademy.AnaMartinez.rockets.tests.model;
 
+import com.ITAcademy.AnaMartinez.rockets.model.Propeller;
 import com.ITAcademy.AnaMartinez.rockets.model.Rocket;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,14 +12,14 @@ import static org.junit.Assert.*;
 public class RocketTest {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
     }
 
     @Test
     public void ARocketHasACodeAndANumberOfPropellers(){
         Rocket rocket = new Rocket("12345678",3);
         assertNotNull(rocket.getId());
-        assertNotNull(rocket.getPropellersNumber());
+        assertEquals(3, rocket.getPropellersNumber());
     }
 
     @Test
@@ -63,21 +64,92 @@ public class RocketTest {
 
     @Test (expected = InvalidParameterException.class)
     public  void PassingNotEnoughNumbersToAssignTheMaxPowerToThePropellersThrowsAnException(){
-        Rocket rocket = new Rocket("12345678",3, 10, 20);
+        new Rocket("12345678",3, 10, 20);
     }
 
     @Test (expected = InvalidParameterException.class)
     public  void PassingTooManyNumbersToAssignTheMaxPowerToThePropellersThrowsAnException(){
-        Rocket rocket = new Rocket("12345678",3, 10, 20,30,40);
+        new Rocket("12345678",3, 10, 20,30,40);
     }
 
     @Test (expected = InvalidParameterException.class)
     public void ARocketMustHaveAtLeastOnePropellerOrExceptionIsThrown(){
-        Rocket rocket = new Rocket("12345678",0);
+        new Rocket("12345678",0);
     }
 
     @Test (expected = InvalidParameterException.class)
     public void ANegativeValueAsMaximumPropellerValueThrowsAnException(){
-        Rocket rocket = new Rocket("12345678",3, 10, 20, -1);
+        new Rocket("12345678",3, 10, 20, -1);
     }
+
+    @Test
+    public void ThePropellersHaveAnActualPowerInitTo0(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20,30);
+        assertEquals(0, rocket.getPropellers()[0].getActualPower());
+        assertEquals(0, rocket.getPropellers()[1].getActualPower());
+        assertEquals(0, rocket.getPropellers()[2].getActualPower());
+    }
+
+    @Test
+    public void ThePropellersCanBeAcceleratedBy10u(){
+        Propeller propeller = new Propeller(20);
+        propeller.accelerate();
+        assertEquals(10, propeller.getActualPower());
+    }
+
+    @Test
+    public void ThePropellerCannotAccelerateMoreThanMaxPower(){
+        Propeller propeller = new Propeller(20);
+        propeller.accelerate();
+        propeller.accelerate();
+        propeller.accelerate();
+        assertEquals(20, propeller.getActualPower());
+    }
+
+    @Test
+    public void ThePropellerCanDecelerateBy10u(){
+        Propeller propeller = new Propeller(20);
+        propeller.accelerate();
+        propeller.accelerate();
+        propeller.deccelarate();
+        assertEquals(10, propeller.getActualPower());
+    }
+
+    @Test
+    public void ThePropellerCannotDecelerateUnder0(){
+        Propeller propeller = new Propeller(20);
+        propeller.deccelarate();
+        assertEquals(0, propeller.getActualPower());
+    }
+
+    @Test
+    public void theRocketCanAccelerateBy10uByPropeller(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20,30);
+        rocket.accelerate();
+        assertEquals(10, rocket.getPropellers()[0].getActualPower());
+        assertEquals(10, rocket.getPropellers()[1].getActualPower());
+        assertEquals(10, rocket.getPropellers()[2].getActualPower());
+    }
+
+    @Test
+    public void theRocketCanBeDeceleratedBy10uByPropeller(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20,30);
+        rocket.accelerate();
+        rocket.accelerate();
+        rocket.deccelerate();
+        assertEquals(0, rocket.getPropellers()[0].getActualPower());
+        assertEquals(10, rocket.getPropellers()[1].getActualPower());
+        assertEquals(10, rocket.getPropellers()[2].getActualPower());
+    }
+
+    @Test
+    public void TheRocketHasASpeed(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20,30);
+        rocket.accelerate();
+        rocket.accelerate();
+        rocket.deccelerate();
+        assertEquals(20, rocket.getSpeed());
+    }
+
+
 }

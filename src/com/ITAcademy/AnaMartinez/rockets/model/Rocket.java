@@ -1,6 +1,7 @@
 package com.ITAcademy.AnaMartinez.rockets.model;
 
 import java.security.InvalidParameterException;
+import java.util.Arrays;
 
 public class Rocket {
 
@@ -18,7 +19,6 @@ public class Rocket {
             propellers[i]= new Propeller(0);
         }
     }
-
 
     public Rocket(String id, int propellersNumber, int... propellersMaxPower) throws InvalidParameterException {
         checkValidId(id);
@@ -73,5 +73,35 @@ public class Rocket {
         if(num <= 0){
             throw  new InvalidParameterException("Incorrect propeller number; the rocket must have at least 1");
         }
+    }
+
+    public void accelerate() {
+        for (int i = 0; i <propellersNumber; i++) {
+            propellers[i].accelerate();
+        }
+    }
+
+    public void deccelerate() {
+        for (int i = 0; i <propellersNumber; i++) {
+            propellers[i].deccelarate();
+        }
+    }
+
+    public int getSpeed() {
+        int speed =0;
+        for (int i = 0; i <propellersNumber; i++) {
+            speed += propellers[i].getActualPower();
+        }
+        return speed;
+    }
+
+    @Override
+    public String toString() {
+        return "Rocket{" +
+                "\n\tcode = '" + id + '\'' +
+                ", \n\tactual speed = " + getSpeed() +
+                ", \n\tpropellersNumber = " + propellersNumber +
+                ", \n\tpropellers = " + Arrays.toString(propellers) +
+                "\n}";
     }
 }
