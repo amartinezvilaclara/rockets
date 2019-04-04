@@ -8,6 +8,8 @@ public class Rocket {
     private String id;
     private int propellersNumber;
     private Propeller[] propellers;
+    private double speed;
+
 
     public Rocket(String id, int propellersNumber) {
         checkValidId(id);
@@ -18,6 +20,7 @@ public class Rocket {
         for(int i = 0; i< propellersNumber; i++){
             propellers[i]= new Propeller(0);
         }
+        this.speed = 0;
     }
 
     public Rocket(String id, int propellersNumber, int... propellersMaxPower) throws InvalidParameterException {
@@ -30,6 +33,7 @@ public class Rocket {
         for(int i = 0; i< propellersMaxPower.length; i++){
             propellers[i]= new Propeller(propellersMaxPower[i]);
         }
+        this.speed = 0;
     }
 
     public String getId() {
@@ -87,7 +91,7 @@ public class Rocket {
         }
     }
 
-    public int getSpeed() {
+    public int getTotalPower() {
         int speed =0;
         for (int i = 0; i <propellersNumber; i++) {
             speed += propellers[i].getActualPower();
@@ -99,9 +103,19 @@ public class Rocket {
     public String toString() {
         return "Rocket{" +
                 "\n\tcode = '" + id + '\'' +
+                ", \n\tactual power = " + getTotalPower() +
                 ", \n\tactual speed = " + getSpeed() +
                 ", \n\tpropellersNumber = " + propellersNumber +
                 ", \n\tpropellers = " + Arrays.toString(propellers) +
                 "\n}";
+    }
+
+    public double getSpeed() {
+        int sumOfPower =0;
+        for (int i = 0; i <propellersNumber; i++) {
+            sumOfPower += propellers[i].getActualPower();
+        }
+        this.speed = this.speed + 100 *  Math.sqrt(sumOfPower);
+        return speed;
     }
 }

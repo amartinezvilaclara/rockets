@@ -143,13 +143,26 @@ public class RocketTest {
     }
 
     @Test
-    public void TheRocketHasASpeed(){
+    public void TheRocketHasATotalPower(){
         Rocket rocket = new Rocket("12345678",3, 10, 20,30);
         rocket.accelerate();
         rocket.accelerate();
         rocket.deccelerate();
-        assertEquals(20, rocket.getSpeed());
+        assertEquals(20, rocket.getTotalPower());
     }
 
+    @Test
+    public void TheRocketHasANonFrictionCalculatedSpeedInitTo0(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20,30);
+        assertEquals(0,rocket.getSpeed(), 0.00001);
+    }
 
+    @Test
+    public void TheRocketHasANonFrictionCalculatedSpeed(){
+        Rocket rocket = new Rocket("12345678",3, 10, 20,30);
+        rocket.accelerate();
+        rocket.accelerate();
+        rocket.deccelerate();
+        assertEquals(447.2135954999579,rocket.getSpeed(), 0.00001);
+    }
 }
